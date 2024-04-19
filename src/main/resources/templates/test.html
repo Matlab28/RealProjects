@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h2>Number Guessing Game</h2>
+<p>Guess a number between 1 and 20:</p>
+<form id="guessForm">
+    <input type="number" id="guessNumber" min="1" max="20" required>
+    <button type="submit">Submit Guess</button>
+</form>
+<p id="result"></p>
+
+<script>
+    document.getElementById('guessForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var guess = document.getElementById('guessNumber').value;
+        fetch('http://localhost:3000/guess', {  // Update the URL here
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "number": guess })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>

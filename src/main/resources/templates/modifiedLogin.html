@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            /*background-color: #333333;*/
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dark-mode body {
+            background-color: #333;
+        }
+
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            transition: background-color 0.3s ease;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+
+        .dark-mode-toggle input{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .toggle-button input {
+            display: none;
+        }
+
+        .dark-mode-toggle label {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 25px;
+        }
+
+        .toggle-button input {
+            display: none;
+        }
+
+        .toggle-button label {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 25px;
+        }
+
+        .toggle-button label:after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle-button input:checked + label {
+            background-color: #555;
+        }
+
+        .toggle-button input:checked + label:after {
+            transform: translateX(20px);
+        }
+
+        .dark-mode-toggle label:after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .dark-mode-toggle input:checked + label {
+            background-color: #555;
+        }
+
+        .toggle-button input:checked + label:after {
+            /*transform: translateX(20px);*/
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* ---------------------------------------------------------------*/
+
+        .dark-mode-toggle input {
+            display: none;
+        }
+
+        .dark-mode-toggle label {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 25px;
+        }
+
+        .dark-mode-toggle label:after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .dark-mode-toggle input:checked + label {
+            background-color: #555;
+        }
+
+        .dark-mode-toggle input:checked + label:after {
+            transform: translateX(20px);
+        }
+
+
+        /* ---------------------------------------------------------------*/
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .dark-mode input[type="text"],
+        .dark-mode input[type="email"],
+        .dark-mode input[type="password"],
+        .dark-mode input[type="submit"] {
+            background-color: #444;
+            /*border-color: #666;*/
+            border-color: #45a049;
+            color: #ddd;
+        }
+
+        .dark-mode h2{
+            color: #dddddd;
+        }
+
+        .dark-mode input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dark-mode .form-container {
+            background-color: #555;
+        }
+
+        .dark-mode label,
+        .dark-mode #result {
+            color: #ddd;
+        }
+
+        .dark-mode button {
+            background-color: #333;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            /*background-color: #666;*/
+            /*border: none;*/
+            /*border-radius: 50%;*/
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+            /*z-index: 9999;*/
+
+            content: '';
+            background-color: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #ddd;
+        }
+
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Create Account</h2>
+    <form id="loginForm" action="http://localhost:3000/login/create" method="POST" onsubmit="return validateForm(event)">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="passConfirm">Confirm Password:</label>
+        <input type="password" id="passConfirm" name="passConfirm" required>
+
+        <input type="submit" value="Create Account">
+    </form>
+    <div id="result"></div>
+</div>
+
+<div class="dark-mode-toggle" onclick="toggleDarkMode()">
+    <span>
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle"></label>
+    </span>
+</div>
+
+<!--<button class="dark-mode-toggle" onclick="toggleDarkMode()">-->
+<!--    <span></span>-->
+<!--</button>-->
+
+<script>
+    function validateForm(event) {
+        event.preventDefault();
+
+        var xhr = new XMLHttpRequest();
+        var url = 'http://localhost:3000/login/create';
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var passConfirm = document.getElementById("passConfirm").value;
+
+        if (password !== passConfirm) {
+            alert("Passwords do not match");
+            return false;
+        }
+
+        var params = JSON.stringify({
+            "username": username,
+            "email": email,
+            "password": password,
+            "passConfirm": passConfirm
+        });
+
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    var response = xhr.responseText;
+                    document.getElementById('result').innerText = response; // Update result below buttons
+                } else {
+                    alert('Error: ' + xhr.status);
+                }
+            }
+        };
+
+        xhr.send(params);
+
+        return true;
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+</script>
+</body>
+</html>

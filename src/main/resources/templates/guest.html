@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #eee;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #guestList {
+            margin-top: 20px;
+        }
+
+        .guest-container {
+            border-bottom: 1px solid #444;
+            padding: 10px 0;
+        }
+
+        .guest-container:last-child {
+            border-bottom: none;
+        }
+
+        .guest-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .guest-name {
+            font-weight: bold;
+        }
+
+        .guest-age {
+            color: #888;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Guest List</h1>
+    <form id="addGuestForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required>
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+        <button type="submit">Add Guest</button>
+    </form>
+    <div id="guestList"></div>
+</div>
+
+<script>
+    // Function to fetch guest list from the server and display it
+    async function fetchGuestList() {
+        const response = await fetch('http://localhost:3000/guest/create');
+        const guests = await response.json();
+        const guestList = document.getElementById('guestList');
+        guestList.innerHTML = ''; // Clear existing guest list
+        guests.forEach(guest => {
+            const guestContainer = document.createElement('div');
+            guestContainer.classList.add('guest-container');
+            guestContainer.innerHTML = `
+                <div class="guest-info">
+                    <div class="guest-name">${guest.firstName} ${guest.lastName}</div>
+                    <div class="guest-age">${guest.age}</div>
+                </div>
+            `;
+            guestList.appendChild(guestContainer);
+        });
+    }
+
+    // Function to add a guest to the server
+    async function addGuest(firstName, lastName, age) {
+        const response = await fetch('http://localhost:3000/guest', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ firstName, lastName, age })
+        });
+        if (response.ok) {
+            fetchGuestList(); // Fetch updated guest list
+        } else {
+            console.error('Failed to add guest');
+        }
+    }
+
+    // Event listener for form submission
+    document.getElementById('addGuestForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const age = document.getElementById('age').value;
+        addGuest(firstName, lastName, age);
+        // Clearing form fields
+        document.getElementById('firstName').value = '';
+        document.getElementById('lastName').value = '';
+        document.getElementById('age').value = '';
+    });
+
+    // Fetch guest list when the page loads
+    fetchGuestList();
+</script>
+</body>
+</html>
